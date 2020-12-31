@@ -1,5 +1,42 @@
 # Social App
 
+## Problems 
+- Handling uplaoded file using busboy
+	- links
+		- https://stackoverflow.com/questions/56091250/firebase-and-busboy-do-i-get-the-whole-file-in-memory-or
+		- https://cloud.google.com/functions/docs/writing/http#multipart_data
+```JavaScript
+router.post('/image', (req, res) => {
+	// Save all incoming files to disk
+	let imageFileName;
+	let imageToBeUploaded = {};
+
+	console.log(req.headers);
+	const busboy = new Busboy({ headers: req.headers });
+
+	busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+		console.log(fieldname, file, filename, encoding, mimetype);
+		// name.name.ext
+		const imageExtension = filename.split('.').slice(-1)[0];
+		// 3423432501.ext
+		imageFileName = `${Math.round(Math.random() * 1e10)}.${imageExtension}`;
+		const filepath = path.join(os.tmpdir(), imageFileName);
+		imageToBeUploaded = { filepath, mimetype }; // using for firebase
+		file.pipe(fs.createWriteStream(filepath));
+	});
+
+	busboy.on('finish', () => {
+		res.json({ msg: "finished test"} );
+	});
+
+	// req.pipe(busboy); // However this does not work in Firebase.
+	busboy.end(req.rawBody); // Use this instead
+});
+```
+
+
+---
+
 ## Lesson Learned
 - Firebase
 	- we can use 'express' library with firebase function
@@ -7,6 +44,8 @@
 	- emulator -> run firebase function locally during developing
 		- `firebase emulators:start` or `firebase serve`
 	- verify tokenId (JWT) -> https://firebase.google.com/docs/auth/admin/verify-id-tokens
+	- Firebase Storage 
+		- Firebase Storage is currently browser JS only. Since 'Google Cloud Storage' already provides a number of high quality client libraries. 
 - JavaScript
 	- string method
 		- `.startsWith('Bearer')`

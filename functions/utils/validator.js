@@ -42,4 +42,20 @@ const validateSinginData = ((req, res, next) => {
 	next();
 });
 
-module.exports = { isEmail, isEmpty, validateSignupData, validateSinginData };
+const reduceUserDetails = (data) => {
+	const { bio, website, location } = data;
+	let userDetails = {};
+
+	if (!isEmpty(bio.trim())) userDetails.bio = bio;
+	if (!isEmpty(website.trim())) {
+		// https://website.com
+		if (website.trim().substring(0, 4) !== 'http') {
+			userDetails.website = `http://${website.trim()}`;
+		} else userDetails.website = website;
+	}
+	if (!isEmpty(location.trim())) userDetails.location = location;
+
+	return userDetails;
+}
+
+module.exports = { isEmail, isEmpty, validateSignupData, validateSinginData, reduceUserDetails };

@@ -7,6 +7,7 @@ const { isEmail, isEmpty, validateSignupData, validateSinginData } = require('..
 router.post('/sign-up', validateSignupData, (req, res) => {
 	const { email, password, confirmPassword, handle } = req.body;
 	
+	const defaultProfileImage = 'default-profile.png';
 	let userToken, userId;
 
 	db.doc(`/users/${handle}`).get()
@@ -26,7 +27,8 @@ router.post('/sign-up', validateSignupData, (req, res) => {
 			handle,
 			email,
 			createdAt: new Date().toISOString(),
-			userId
+			userId,
+			imageUrl: `https://storage.cloud.google.com/${process.env.firebase_storageBucket}/${imageFileName}`
 		};
 		return db.doc(`/users/${handle}`).set(userCredentials);
 	})

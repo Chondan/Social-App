@@ -73,33 +73,13 @@ module.exports.hello = () => console.log("Hello");
 	- So base64url solves this by replacing `+` with `-` and `/` with `_`. The trailing padding character `=` can be eliminated when not needed, but in a URL it would instead most likely be `%` URL encoded. Then the encoded data can be included in a URL without problems.
 - metadata
 	- Metadata is data that describes other data. 'Meta' is a prefix that -- in most information technology usages -- means "an underlying definition or description". Metadata summarizes basic information about data, which can make finding and working with particular instances of data easier.
+- gzip -> gzip if a file format and a software application used for file compression and decompression.
+- google cloud storage node.js -> https://googleapis.dev/nodejs/storage/latest/
 
-## Database Schema
-```JavaScript
-// showing how our database look like
-const db = {
-	screams: [
-		{ 
-			userHandle: 'user', 
-			body: 'body', 
-			createdAt: "2020-12-24T11:05:13.489Z",
-			likeCount: 5, 
-			commentCount: 2
-		}
-	],
-	users: [
-		{
-			userId: '5DH9O5S1j0SQuwZT8Gp0y6m0Ja43',
-			handle: 'chondan',
-			email: 'chondan@example.com',
-			createdAt: "2020-12-24T11:05:13.489Z"
-		}
-	]
-};
-```
+
 
 ---
 
-> Currently at 1:19:36 -> https://www.youtube.com/watch?v=m_u6P5k0vP0&t=2949s
+> Currently at 2:36:36 -> https://www.youtube.com/watch?v=m_u6P5k0vP0&t=2949s
 
 ---

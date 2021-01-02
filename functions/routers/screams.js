@@ -1,8 +1,20 @@
 const express = require('express');
 const router = express.Router();
 
-const { auth, db, admin } = require('../utils/firebase_services');
+const { db } = require('../utils/firebase_services');
+const { FBAuth } = require('../utils/auth');
 
+// ----- ALL ROUTES -----
+/* 
+1. get all screams [DONE]
+2. post one screams [DONE]
+3. get one screams -> '/scream/:screamId'
+4. delete a scream
+5. unlike a scream
+6. comment on scream
+*/
+
+// ----- Get all screams -----
 router.get('/screams', (req, res) => {
 	const screams = [];
 	db.collection('screams').orderBy('createdAt', 'desc')
@@ -20,30 +32,6 @@ router.get('/screams', (req, res) => {
 		res.status(500).json({ error: 'something went wrong' });
 	});
 });
-
-// ----- Firebase Authentication Middleware -----
-const FBAuth = (req, res, next) => {
-	let idToken;
-	if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
-		[, idToken] = req.headers.authorization.split(' ');
-	} else {
-		console.error('No token found');
-		return res.status(401).json({ error: "Unauthorized" });
-	}
-	// verify tokenId
-	admin.auth().verifyIdToken(idToken)
-	.then(decodedToken => {
-		req.user = decodedToken;
-		return db.collection('users').where('userId', '==', req.user.uid).limit(1).get();
-	})
-	.then(data => {
-		req.user.handle = data.docs[0].data().handle;
-		return next();
-	})
-	.catch(err => {
-		return res.status(401).json({ error: "Unauthorized" });
-	});
-}
 
 // ----- Post one scream -----
 router.post('/scream', FBAuth, (req, res) => {

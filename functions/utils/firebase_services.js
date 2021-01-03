@@ -23,7 +23,7 @@ const auth = firebase.auth();
 const db = admin.firestore();
 
 // Storage
-const storage = new Storage({ projectId: process.env.firebase_projectId, keyFilename: path.join(__dirname, 'Social-App-55e45fed5689.json') });
+const storage = new Storage({ projectId: process.env.firebase_projectId, keyFilename: path.join(__dirname, 'service_key.json') });
 const bucket = storage.bucket(process.env.firebase_storageBucket);
 
 module.exports = { auth, db, admin, bucket };

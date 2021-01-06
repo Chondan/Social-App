@@ -14,18 +14,18 @@ const isEmpty = (string) => {
 const validateSignupData = ((req, res, next) => {
 	const { email, password, confirmPassword, handle } = req.body;
 
-	let errors = {};
+	let errorObj = { errors: {} };
 
 	if (isEmpty(email)) {
-		errors.email = "Email must not be empty";
+		errorObj.errors.email = "Email must not be empty";
 	} else if (!isEmail(email)) {
-		errors.email = "Email must be valid"
+		errorObj.errors.email = "Email must be valid"
 	}
 
-	if (isEmpty(password)) errors.password = "Password must not be empty";
-	if (password !== confirmPassword) errors.password = "Passwords must match";
-	if (isEmpty(handle)) errors.handle = "Handle must not be empty";
-	if (Object.keys(errors).length > 0) return res.status(400).json(errors);
+	if (isEmpty(password)) errorObj.errors.password = "Password must not be empty";
+	if (password !== confirmPassword) errorObj.errors.password = "Passwords must match";
+	if (isEmpty(handle)) errorObj.errors.handle = "Handle must not be empty";
+	if (Object.keys(errorObj.errors).length > 0) return res.status(400).json(errorObj);
 
 	next();
 });
@@ -33,11 +33,11 @@ const validateSignupData = ((req, res, next) => {
 const validateSinginData = ((req, res, next) => {
 	const { email, password } = req.body;
 
-	let errors = {};
+	let errorObj = { errors: {} };
 
-	if (isEmpty(email)) errors.email = "Email must not be empty";
-	if (isEmpty(password)) errors.password = "Password must not be empty";
-	if (Object.keys(errors).length > 0) return res.status(400).json(errors);
+	if (isEmpty(email)) errorObj.errors.email = "Email must not be empty";
+	if (isEmpty(password)) errorObj.errors.password = "Password must not be empty";
+	if (Object.keys(errorObj.errors).length > 0) return res.status(400).json(errorObj);
 
 	next();
 });

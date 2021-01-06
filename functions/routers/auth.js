@@ -4,6 +4,11 @@ const router = express.Router();
 const { auth, db } = require('../utils/firebase_services');
 const { isEmail, isEmpty, validateSignupData, validateSinginData } = require('../utils/validator');
 
+/* ----- ALL ROUTES -----
+1. sign up -> '/sign-up' [DONE]
+2. log in -> '/login' [DONE]
+*/
+
 router.post('/sign-up', validateSignupData, (req, res) => {
 	const { email, password, confirmPassword, handle } = req.body;
 	
@@ -13,7 +18,7 @@ router.post('/sign-up', validateSignupData, (req, res) => {
 	db.doc(`/users/${handle}`).get()
 	.then(doc => {
 		if (doc.exists) {
-			return res.status(400).json({ handle: 'this handle is already taken' });
+			return Promise.reject({ httpCode: 400, message: "This handle is already taken" });
 		}
 		return auth.createUserWithEmailAndPassword(email, password);
 	})
@@ -28,7 +33,7 @@ router.post('/sign-up', validateSignupData, (req, res) => {
 			email,
 			createdAt: new Date().toISOString(),
 			userId,
-			imageUrl: `https://storage.cloud.google.com/${process.env.firebase_storageBucket}/${imageFileName}`
+			imageUrl: `https://firebasestorage.googleapis.com/v0/b/${process.env.firebase_storageBucket}/o/${defaultProfileImage}?alt=media&token=${process.env.firebase_default_profile_image_access_token}`
 		};
 		return db.doc(`/users/${handle}`).set(userCredentials);
 	})
@@ -36,7 +41,7 @@ router.post('/sign-up', validateSignupData, (req, res) => {
 		return res.status(201).json({ token: userToken });
 	})
 	.catch(err => {
-		res.status(500).json({ error: "something went wrong", msg: err.message });
+		res.status(err.httpCode ? err.httpCode : 500).json({ error: "something went wrong, please try again.", message: err.message });
 	});
 });
 
@@ -51,8 +56,7 @@ router.post('/login', validateSinginData, (req, res) => {
 		return res.json({ token });
 	})
 	.catch(err => {
-		console.log(err);
-		res.status(500).json({ error: err.code });
+		return res.status(500).json({ error: "something went wrong, please try again", message: err.message });
 	});
 });
 

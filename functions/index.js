@@ -4,6 +4,7 @@ const functions = require('firebase-functions');
 const screamsRouter = require('./routers/screams');
 const authRouter = require('./routers/auth');
 const userRouter = require('./routers/user');
+const notificationRouter = require('./routers/notification');
 
 // ----- Express -----
 const express = require('express');
@@ -20,5 +21,15 @@ app.use('/', authRouter);
 // ----- User Router -----
 app.use('/user', userRouter);
 
+// ----- Notification Router -----
+app.use('/notifications', notificationRouter);
+
 // ------ https://baseurl.com/api/ -----
 exports.api = functions.https.onRequest(app);
+// ------ Trigger -----
+const { createNotificationOnAction, deleteNotificationOnAction, createNotificationOnUserImageChange, createNotificationOnScreamDelete } = require('./utils/triggers');
+exports.createNotificationOnLike = createNotificationOnAction("like"); // like
+exports.createNotificationOnComment = createNotificationOnAction("comment"); // comment
+exports.deleteNotificationOnUnlike = deleteNotificationOnAction("unlike");
+exports.createNotificationOnUserImageChange = createNotificationOnUserImageChange();
+exports.createNotificationOnScreamDelete = createNotificationOnScreamDelete();

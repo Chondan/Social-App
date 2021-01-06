@@ -33,7 +33,8 @@ router.post('/image', (req, res) => {
 	busboy.end(req.rawBody); // Use this instead
 });
 ```
-
+- get access token to access an uploaded file
+	- link: https://stackoverflow.com/questions/59432624/how-can-i-generate-access-token-to-file-uploaded-to-firebase-storage
 
 ---
 
@@ -46,6 +47,9 @@ router.post('/image', (req, res) => {
 	- verify tokenId (JWT) -> https://firebase.google.com/docs/auth/admin/verify-id-tokens
 	- Firebase Storage 
 		- Firebase Storage is currently browser JS only. Since 'Google Cloud Storage' already provides a number of high quality client libraries. 
+	- Firestore
+		- Batched writes -> https://firebase.google.com/docs/firestore/manage-data/transactions
+			- if you do not need to ready any documents in your operation set, you can execute multiple write operations as a single batch that contains any combination of `set()`, `update()`, or `delete()` operations.
 - JavaScript
 	- string method
 		- `.startsWith('Bearer')`

@@ -17,7 +17,7 @@ const FBAuth = (req, res, next) => {
 	})
 	.then(data => {
 		// req.user.handle = data.docs[0].data().handle;
-		req.user = data.docs[0].data();
+		req.user = data.docs[0].data(); // { bio, email, createdAt, handle, imageUrl, location, userId }
 		return next();
 	})
 	.catch(err => {

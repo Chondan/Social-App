@@ -5,6 +5,7 @@ const db = {
 			userHandle: 'user', 
 			body: 'body', 
 			createdAt: "2020-12-24T11:05:13.489Z",
+			userImage: 'https://storage.cloud.google.com/social-app-892a4.appspot.com/4518911405.jpeg'
 			likeCount: 5, 
 			commentCount: 2
 		}
@@ -26,6 +27,23 @@ const db = {
 			userHandle: 'user',
 			screamId: 'mmIsLNZkhrkOwKIxGRpX',
 			body: 'nice one mate!',
+			createdAt: '2020-12-24T11:05:13.489Z',
+			userImage: 'https://storage.cloud.google.com/social-app-892a4.appspot.com/4518911405.jpeg'
+		}
+	],
+	likes: [
+		{
+			userHandle: 'user',
+			screamId: 'mmIsLNZkhrkOwKIxGRpX'
+		}
+	],
+	notifications: [
+		{
+			recipient: 'user',
+			sender: 'john',
+			read: 'true | false',
+			screamId: 'lasfsadjfasfjlasf',
+			type: 'like | comment',
 			createdAt: '2020-12-24T11:05:13.489Z'
 		}
 	]

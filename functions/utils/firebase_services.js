@@ -1,6 +1,5 @@
 require('dotenv').config();
 const path = require('path');
-const { Storage } = require('@google-cloud/storage');
 const firebase = require('firebase');
 const admin = require('firebase-admin');
 admin.initializeApp();
@@ -12,7 +11,6 @@ const firebaseConfig = {
   storageBucket: process.env.firebase_storageBucket,
   messagingSenderId: process.env.firebase_messagingSenderId,
   appId: process.env.firebase_appId,
-  measurementId: process.env.firebase_measurementId
 };
 firebase.initializeApp(firebaseConfig);
 
@@ -23,7 +21,7 @@ const auth = firebase.auth();
 const db = admin.firestore();
 
 // Storage
-const storage = new Storage({ projectId: process.env.firebase_projectId, keyFilename: path.join(__dirname, 'service_key.json') });
+const storage = admin.storage();
 const bucket = storage.bucket(process.env.firebase_storageBucket);
 
 module.exports = { auth, db, admin, bucket };
